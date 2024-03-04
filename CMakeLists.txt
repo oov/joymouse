@@ -88,4 +88,4 @@ add_executable(joymouse main.c)
 set_target_properties(joymouse PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${EXPORT_DIR}"
 )
-target_link_libraries(joymouse PRIVATE joymouse_intf)
+target_link_libraries(joymouse PRIVATE joymouse_intf ole32)
