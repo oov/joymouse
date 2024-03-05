@@ -88,7 +88,7 @@ static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM wparam,
     INPUT inputs[4] = {0};
     int num_inputs = 0;
 
-    INPUT *mouse = &inputs[num_inputs++];
+    INPUT *mouse = &inputs[0];
     *mouse = (INPUT){
         .type = INPUT_MOUSE,
     };
