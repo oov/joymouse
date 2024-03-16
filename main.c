@@ -100,7 +100,7 @@ static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM wparam,
     float y = ss.stickLY;
     static float const min_deadzone = .1f;
     static float const max_deadzone = 1.f / (1.f - min_deadzone);
-    static float const max_accel_factor = 30.f;
+    static float const max_accel_factor = 20.f;
     if (fabsf(x) < min_deadzone && fabsf(y) < min_deadzone) {
       x = 0.f;
       y = 0.f;
@@ -108,9 +108,13 @@ static LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM wparam,
     } else {
       x = fmaxf(-1.f, fminf(1.f, x * max_deadzone));
       y = fmaxf(-1.f, fminf(1.f, y * max_deadzone));
-      x *= fabsf(x);
-      y *= fabsf(y);
-      g_accel_factor = fminf(max_accel_factor, g_accel_factor + .3f);
+      float const len = fminf(1.f, sqrtf(x * x + y * y));
+      g_accel_factor =
+          fminf(max_accel_factor, g_accel_factor + len * len * len);
+#if JOYMOUSE_DEBUG
+      printf("x: %f, y: %f, len: %f, accel: %f\n", (double)x, (double)y,
+             (double)len, (double)g_accel_factor);
+#endif
       num_inputs = 1;
       if (g_joycon_horz) {
         if (ss.buttons & JSMASK_RIGHT) {
